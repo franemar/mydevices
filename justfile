@@ -1,4 +1,4 @@
 build-debug:
   ./gradlew nativeBinaries
-  ./build/bin/native/debugExecutable/KotlinNativeTemplate.kexe
+  ./build/bin/native/debugExecutable/MyDevices.kexe
 
