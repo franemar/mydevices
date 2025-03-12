@@ -1,7 +1,7 @@
 import kotlin.native.Platform
 import kotlin.native.OsFamily
 
-data object Env { //convert to class/data class
+data class Env (private var checked: Boolean = false){
     @OptIn(kotlin.experimental.ExperimentalNativeApi::class)
     val platformOsFamily = Platform.osFamily
     @OptIn(kotlin.experimental.ExperimentalNativeApi::class)
@@ -13,13 +13,14 @@ data object Env { //convert to class/data class
 
     fun checkOS(): Boolean {
       val osMsg = when (platformChecked) {
-        false -> "Not implemented yet."
-        true -> "Target environment checked:."
+        false -> "not implemented yet."
+        true -> "target environment checked."
       }
 
-      println("Environment check status: $osMsg")
+      checked = true
+      println("\nEnvironment check status: $osMsg")
       @OptIn(kotlin.experimental.ExperimentalNativeApi::class)
-      println(platformOsFamily)
+      println("Platform OS Family: $platformOsFamily")
       return platformChecked
    }
 }

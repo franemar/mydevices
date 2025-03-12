@@ -1,5 +1,4 @@
-import Env.platformChecked
-//import Env.platformOsFamily
+//import Env
 import kotlin.system.exitProcess
 
 //JSON/PrettyPrint version
@@ -47,7 +46,8 @@ fun main() {
 fun main() {
   println("Hello from MyDevices!")
 
-  val platformChecked = platformChecked
+  val env = Env()
+  val platformChecked = env.checkOS()
 
   val msg = when (platformChecked) {
     true -> "Creating command..."
