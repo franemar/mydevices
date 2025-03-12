@@ -1,3 +1,7 @@
+import Env.platformChecked
+//import Env.platformOsFamily
+import kotlin.system.exitProcess
+
 //JSON/PrettyPrint version
 
 /*import kotlinx.serialization.Serializable
@@ -40,24 +44,21 @@ fun main() {
 }
 */
 
-import env
-import gleam/io
-import gleave
+fun main() {
+  println("Hello from MyDevices!")
 
-pub fn main() {
-  io.println("Hello from mydevices!\n")
+  val platformChecked = platformChecked
 
-  let env_os = env.check_os()
-
-  let msg = case env_os.0 {
-    True -> "Creating command..."
-    False ->"Cannot continue, execution stopped."
+  val msg = when (platformChecked) {
+    true -> "Creating command..."
+    false ->"Cannot continue, execution stopped."
   }
 
-  io.println("\n" <> msg)
+  println("\n$msg")
 
-  let _ = case env_os.0 {
-    True -> Nil
-    False -> gleave.exit(0)
+  when (platformChecked) {
+    //true -> null
+    false -> exitProcess(0)
+    else -> Unit
   }
 }

@@ -1,33 +1,26 @@
-import kotlin.native.Platform @kotlin.experimental.ExperimentalNativeApi
+import kotlin.native.Platform
+import kotlin.native.OsFamily
 
-data object Env {
-    val hostOs = Platform.osFamily()
-    //val isArm64 = System.getProperty("os.arch") == "aarch64"
-    //val isMingwX64 = hostOs.startsWith("Windows")
-    val nativeTarget = when {
-        hostOs == "Mac OS X" && isArm64 -> macosArm64("native")
-        hostOs == "Mac OS X" && !isArm64 -> macosX64("native")
-        hostOs == "Linux" && isArm64 -> linuxArm64("native")
-        hostOs == "Linux" && !isArm64 -> linuxX64("native")
-        isMingwX64 -> mingwX64("native")
-        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
+data object Env { //convert to class/data class
+    @OptIn(kotlin.experimental.ExperimentalNativeApi::class)
+    val platformOsFamily = Platform.osFamily
+    @OptIn(kotlin.experimental.ExperimentalNativeApi::class)
+    val platformChecked = when (platformOsFamily) {
+        in arrayOf(OsFamily.MACOSX, OsFamily.LINUX) -> true
+        OsFamily.WINDOWS -> false
+        else -> false
     }
 
-
-    fun CheckOS() -> Boolean {
-      osMsg = when nativeTarget {
-        mingwX64("native") -> "Not implemented yet."
-        //Review feasibility
-        else -> "target environment checked:"
+    fun checkOS(): Boolean {
+      val osMsg = when (platformChecked) {
+        false -> "Not implemented yet."
+        true -> "Target environment checked:."
       }
 
-      println("Environment check status: " <> os_msg)
-      println(exOSFamily)
-
-      when nativeTarget {
-        is mingwX64("native") -> false
-	else -> true
-      }
+      println("Environment check status: $osMsg")
+      @OptIn(kotlin.experimental.ExperimentalNativeApi::class)
+      println(platformOsFamily)
+      return platformChecked
    }
 }
 
